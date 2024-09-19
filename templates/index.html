@@ -1,6 +1,11 @@
 <title>Etusivu</title>
 <h1>Blogsite</h1>
+{% if session.username %}
+<p>Logged in as {{ session.username }}</p>
+<a href="/logout">Log out</a>
 
-
-<button onclick="location.href='/create_account'">Create account</button>
+{% else %}
 <button onclick="location.href='/login'">Login</button>
+<p>Dont have an account?</p>
+<button onclick="location.href='/create_account'">Create account</button>
+{% endif %}

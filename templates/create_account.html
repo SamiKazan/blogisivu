@@ -2,7 +2,10 @@
 
 <h1>Create account</h1>
 
-<form action="/create_account" method="post">
+    {{error}}
+
+<form action="/create_account" method="POST">
     <input type="text" name="username" placeholder="Username">
     <input type="password" name="password" placeholder="Password">
     <input type="submit" value="Create account">
+</form>
