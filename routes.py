@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request, redirect
 import users
+import blogs
 
 #returns to main page
 @app.route("/")
@@ -48,3 +49,32 @@ def login():
 def logout():
     users.logout()
     return redirect("/")
+
+#returns crate_blog page
+#creates blog and returns blogpage
+@app.route("/create_blog", methods=["GET", "POST"])
+def create_blog():
+    if request.method == 'GET':
+        return render_template("create_blog.html")
+
+    if request.method == 'POST':
+        genre = request.form["genre"]
+        title = request.form["title"]
+        content = request.form["content"]
+
+        if not title or not content:
+            return render_template("create_blog.html", error="Title and content are required")
+        if len(title) > 100:
+            return render_template("create_blog.html", error="Title is too long (max 100 characters)")
+        if len(content) > 5000:
+            return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
+        
+        if blogs.create_blog(genre, title, content):
+            return redirect("/")
+        return render_template("create_blog.html", error="Error creating blog")
+
+
+
+@app.route("/profile/<int:id>")
+def profile(id):
+    pass

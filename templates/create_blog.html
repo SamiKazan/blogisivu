@@ -1,0 +1,26 @@
+<title>Create blog</title>
+<h1>Create blog</h1>
+{% if session.username %}
+<p>Logged in as {{ session.username }}</p>
+<a href="/logout">Log out</a>
+
+
+{{error}}
+
+<form action="/create_blog" method="post">
+    <p>Genre</p>
+    <input type="text" name="genre" placeholder="Genre">
+    <p>Title</p>
+    <input type="text" name="title" placeholder="Title">
+    <textarea name="content" placeholder="Content" rows="10" cols="50"></textarea>
+    <input type="submit" value="Create blog">
+</form>
+
+
+
+{% else %}
+<p>Login to create a blog post</p>
+<button onclick="location.href='/login'">Login</button>
+<p>Dont have an account?</p>
+<button onclick="location.href='/create_account'">Create account</button>
+{% endif %}

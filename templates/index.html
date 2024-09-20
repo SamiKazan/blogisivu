@@ -3,6 +3,8 @@
 {% if session.username %}
 <p>Logged in as {{ session.username }}</p>
 <a href="/logout">Log out</a>
+<br>
+<a href="/create_blog"> Create new blog</a>
 
 {% else %}
 <button onclick="location.href='/login'">Login</button>

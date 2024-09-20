@@ -29,7 +29,9 @@ CREATE TABLE likes (
 
 CREATE TABLE following (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users ON DELETE CASCADE
+    follower_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    following_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    followed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 /* start-pg.sh */
