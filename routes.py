@@ -70,9 +70,14 @@ def create_blog():
             return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
         
         if blogs.create_blog(genre, title, content):
-            return redirect("/")
+            return redirect("/all_blogs")
         return render_template("create_blog.html", error="Error creating blog")
 
+
+@app.route("/all_blogs")
+def all_blogs():
+    all_blogs = blogs.get_all_blogs()
+    return render_template("all_blogs.html", blogs=all_blogs)
 
 
 @app.route("/profile/<int:id>")

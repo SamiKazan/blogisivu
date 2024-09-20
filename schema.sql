@@ -7,6 +7,7 @@ CREATE TABLE users (
 CREATE TABLE blogs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
+    username TEXT,
     title TEXT,
     genre TEXT,
     uploaded_at TIMESTAMP,

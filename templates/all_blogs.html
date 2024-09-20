@@ -1,0 +1,17 @@
+
+<title>All Blogs</title>
+<h1>All Blogs</h1>
+
+
+<section id="blogs">
+    {% for blog in blogs %}
+    <article class="blog-post">
+        <h2>{{ blog.title }}</h2>
+        <p>{{ blog.content }}</p>
+        <footer>
+            <p>Written by {{ blog.username }} on {{ blog.uploaded_at }}</p>
+        </footer>
+    </article>
+    {% endfor %}
+</section>
+

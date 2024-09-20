@@ -6,10 +6,11 @@ import logging
 #inserts new blog into blogs table
 def create_blog(genre, title, content):
     try:
-        sql = text("INSERT INTO blogs (user_id, title, genre, content, uploaded_at) VALUES (:user_id, :title, :genre, :content, NOW())")
+        sql = text("INSERT INTO blogs (user_id, username, title, genre, content, uploaded_at) VALUES (:user_id, :username, :title, :genre, :content, NOW())")
         
         db.session.execute(sql, {
             "user_id": session["id"],
+            "username": session["username"],
             "title": title,
             "genre": genre,
             "content": content
