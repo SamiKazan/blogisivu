@@ -31,3 +31,29 @@ def get_all_blogs():
     except Exception as e:
         logging.error(f"Error fetching blogs: {e}")
         return []
+
+
+def get_blog_by_id(id):
+    try:
+        sql = text("SELECT * from blogs WHERE id =:id")
+        result = db.session.execute(sql, {"id": id})
+        blog = result.fetchone()
+        return blog
+    except Exception as e:
+        logging.error(f"Error fetching blog by id: {e}")
+        return None
+
+def own_blogs():
+    try:
+        user_id = session.get("id")
+        if not user_id:
+            logging.error("User not logged in")
+            return []
+
+        sql = text("SELECT * FROM blogs WHERE user_id = :user_id")
+        result = db.session.execute(sql, {"user_id": user_id})
+        blogs = result.fetchall()
+        return blogs
+    except Exception as e:
+        logging.error(f"Error fetching own blogs: {e}")
+        return []

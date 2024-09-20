@@ -1,0 +1,28 @@
+{% block content %}
+    <title>Account</title>
+    <h1>Account</h1>
+
+    {% if session.username %}
+        Logged in as {{ session.username }} 
+        <br> 
+        <a href="/logout">Log out</a> <br> <br>
+
+        <form action="/delete_account" method="post">
+            <input type="hidden" name="id" value={{session.id}} />
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <input type="submit" value="delete account" onclick="return confirm('Are you sure you want to remove account? All blogs will be removed.')" />
+        </form>
+
+
+        <form action="/my_blogs" method="get">
+            <input type="hidden" name="id" value={{session.id}} />
+            <input type="submit" value="my blogs" />
+        </form>
+
+    {% else %}
+        USER NOT LOGGED IN
+        <a href="/login">Login</a>
+        Dont have an account?
+        <a href="/create_user">Create account</a>
+    {% endif %}
+{% endblock %}
