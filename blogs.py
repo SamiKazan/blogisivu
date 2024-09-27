@@ -57,3 +57,32 @@ def own_blogs():
     except Exception as e:
         logging.error(f"Error fetching own blogs: {e}")
         return []
+    
+
+def comment_blog(content, blog_id):
+    try:
+        sql = text("INSERT INTO comments (user_id, username, blog_id, content, sent_at) VALUES (:user_id, :username, :blog_id, :content, NOW())")
+
+        db.session.execute(sql, {
+            "user_id": session["id"],
+            "username": session["username"],
+            "blog_id": blog_id,
+            "content": content
+        })
+        db.session.commit()
+        return True
+    except Exception as e:
+        logging.error(f"Error commenting on blog:{e}")
+        return
+    
+
+def get_comments(blog_id):
+    try:
+        sql = text("SELECT content, username, sent_at FROM comments WHERE blog_id = :blog_id")
+        result = db.session.execute(sql, {"blog_id": blog_id})
+        comments = result.fetchall()
+        return comments
+    
+    except Exception as e:
+        logging.error(f"Error fetching comments for blog {blog_id}: {e}")
+        return []

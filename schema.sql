@@ -18,6 +18,7 @@ CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
     blog_id INTEGER REFERENCES blogs ON DELETE CASCADE,
+    username TEXT,
     content TEXT,
     sent_at TIMESTAMP
 );

@@ -14,8 +14,6 @@ def index():
 #returns to main page if account is created
 @app.route("/create_account", methods=["GET", "POST"])
 def create_account():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
 
     if request.method == 'GET':
         return render_template("create_account.html")
@@ -61,13 +59,13 @@ def logout():
 #creates blog and returns blogpage
 @app.route("/create_blog", methods=["GET", "POST"])
 def create_blog():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
-
     if request.method == 'GET':
         return render_template("create_blog.html")
 
     if request.method == 'POST':
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         genre = request.form["genre"]
         title = request.form["title"]
         content = request.form["content"]
@@ -80,7 +78,7 @@ def create_blog():
             return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
         
         if blogs.create_blog(genre, title, content):
-            return redirect("/all_blogs")
+            return redirect("/my_blogs")
         return render_template("create_blog.html", error="Error creating blog")
 
 
@@ -94,13 +92,11 @@ def all_blogs():
 #returns spesific blog
 @app.route("/blog/<int:id>")
 def blog(id):
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
-
     blog_data = blogs.get_blog_by_id(id)
+    comment_data = blogs.get_comments(id)
 
     if blog_data:
-        return render_template("blog.html", blog=blog_data)
+        return render_template("blog.html", blog=blog_data, comments=comment_data)
     else:
         return render_template("error.html", error="Blog not found")
 
@@ -115,3 +111,16 @@ def my_blogs():
 def profile():
     own_blogs = blogs.own_blogs()
     return render_template("profile.html", blogs=own_blogs)
+
+
+@app.route("/comment_blog", methods=["POST"])
+def comment_blog():
+    blog_id = request.form["blog_id"]
+    comment = request.form["comment"]
+
+    if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
+    if blogs.comment_blog(comment, blog_id):
+        return redirect(f"/blog/{blog_id}")
+    return "Failed to comment"

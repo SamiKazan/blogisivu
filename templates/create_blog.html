@@ -8,12 +8,12 @@
 {{error}}
 
 <form action="/create_blog" method="post">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <p>Genre</p>
     <input type="text" name="genre" placeholder="Genre">
     <p>Title</p>
     <input type="text" name="title" placeholder="Title">
     <textarea name="content" placeholder="Content" rows="10" cols="50"></textarea>
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="submit" value="Create blog">
 </form>
 

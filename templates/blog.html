@@ -7,4 +7,19 @@
         <p>{{ blog.content }}</p>
     </div>
     <a href="/all_blogs">Back to all blogs</a>
+
+    <h3>Comments:</h3>
+    <form action="/comment_blog" method="post">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="blog_id" value="{{ blog.id }}">
+        <textarea name="comment" placeholder="Content" rows="10" cols="50"></textarea>
+        <input type="submit" value="Create comment">
+    </form>
+    <ul>
+        {% for comment in comments %}
+            <p>By: {{ comment.username }}</p>
+            <p>{{ comment.content }}</p>
+            <p>sent at: {{ comment.sent_at.strftime ('%d-%m-%Y %H:%M')}}</p>
+        {% endfor %}
+    </ul>
 </body>
