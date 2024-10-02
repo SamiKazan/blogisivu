@@ -43,6 +43,7 @@ def get_blog_by_id(id):
         logging.error(f"Error fetching blog by id: {e}")
         return None
 
+
 def own_blogs():
     try:
         user_id = session.get("id")
@@ -82,6 +83,40 @@ def get_comments(blog_id):
         result = db.session.execute(sql, {"blog_id": blog_id})
         comments = result.fetchall()
         return comments
+    
+    except Exception as e:
+        logging.error(f"Error fetching comments for blog {blog_id}: {e}")
+        return []
+    
+
+def like_blog(blog_id):
+    user_id = session["id"]
+    try:
+        #check if user already liked blog
+        sql_check = text("SELECT COUNT(*) FROM likes WHERE user_id = :user_id AND blog_id = :blog_id")
+        result = db.session.execute(sql_check, {"user_id": user_id, "blog_id": blog_id}).scalar()
+        if result > 0:
+            return False
+
+        sql = text("INSERT INTO likes (user_id, blog_id) VALUES (:user_id, :blog_id)")
+
+        db.session.execute(sql, {
+            "user_id": session["id"],
+            "blog_id": blog_id,
+        })
+        db.session.commit()
+        return True
+    except Exception as e:
+        logging.error(f"Error liking on blog:{e}")
+        return
+    
+
+def get_likes(blog_id):
+    try:
+        sql = text("SELECT COUNT(user_id) FROM likes WHERE blog_id = :blog_id")
+        result = db.session.execute(sql, {"blog_id": blog_id})
+        likes = result.fetchone()
+        return likes[0]
     
     except Exception as e:
         logging.error(f"Error fetching comments for blog {blog_id}: {e}")

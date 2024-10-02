@@ -1,4 +1,5 @@
 <body>
+    {{error}}
     <h1>{{ blog.title }}</h1>
     <p><strong>Author:</strong> {{ blog.username }}</p>
     <p><strong>Genre:</strong> {{ blog.genre }}</p>
@@ -6,6 +7,13 @@
     <div>
         <p>{{ blog.content }}</p>
     </div>
+    <p>Likes: {{  likes  }}</p>
+    <form action="/like_blog" method="post">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="blog_id" value="{{ blog.id }}">
+        <input type="submit" value="Like">
+    </form>
+
     <a href="/all_blogs">Back to all blogs</a>
 
     <h3>Comments:</h3>

@@ -26,14 +26,20 @@ CREATE TABLE comments (
 CREATE TABLE likes (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
-    blog_id INTEGER REFERENCES blogs ON DELETE CASCADE
+    blog_id INTEGER REFERENCES blogs ON DELETE CASCADE,
+    UNIQUE (user_id, blog_id)    
 );
 
-CREATE TABLE following (
+CREATE TABLE drafts (
     id SERIAL PRIMARY KEY,
-    follower_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    following_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    followed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_id INTEGER REFERENCES users ON DELETE CASCADE,
+    title TEXT,
+    genre TEXT,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 /* start-pg.sh */
+
+/*delete account, delete comment, save drafts, edit blog, delete blog*/

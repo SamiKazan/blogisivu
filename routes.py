@@ -94,11 +94,12 @@ def all_blogs():
 def blog(id):
     blog_data = blogs.get_blog_by_id(id)
     comment_data = blogs.get_comments(id)
+    likes_data = blogs.get_likes(id)
 
     if blog_data:
-        return render_template("blog.html", blog=blog_data, comments=comment_data)
+        return render_template("blog.html", blog=blog_data, comments=comment_data, likes=likes_data)
     else:
-        return render_template("error.html", error="Blog not found")
+        return render_template("index.html", error="Blog not found")
 
 
 @app.route("/my_blogs")
@@ -112,7 +113,7 @@ def profile():
     own_blogs = blogs.own_blogs()
     return render_template("profile.html", blogs=own_blogs)
 
-
+#comment on specific blog
 @app.route("/comment_blog", methods=["POST"])
 def comment_blog():
     blog_id = request.form["blog_id"]
@@ -124,3 +125,21 @@ def comment_blog():
     if blogs.comment_blog(comment, blog_id):
         return redirect(f"/blog/{blog_id}")
     return "Failed to comment"
+
+#like specific blog
+@app.route("/like_blog", methods=["POST"])
+def like_blog():
+    blog_id = request.form["blog_id"]
+
+    if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
+    if blogs.like_blog(blog_id):
+        return redirect(f"/blog/{blog_id}")
+    
+    blog_data = blogs.get_blog_by_id(blog_id)
+    comment_data = blogs.get_comments(blog_id)
+    likes_data = blogs.get_likes(blog_id)
+    
+    return render_template("blog.html", blog=blog_data, comments=comment_data, likes=likes_data, 
+                           error="You have already liked this blog")
