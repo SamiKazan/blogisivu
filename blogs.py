@@ -79,7 +79,7 @@ def comment_blog(content, blog_id):
 
 def get_comments(blog_id):
     try:
-        sql = text("SELECT content, username, sent_at FROM comments WHERE blog_id = :blog_id")
+        sql = text("SELECT id, content, username, user_id, sent_at FROM comments WHERE blog_id = :blog_id")
         result = db.session.execute(sql, {"blog_id": blog_id})
         comments = result.fetchall()
         return comments
@@ -121,3 +121,53 @@ def get_likes(blog_id):
     except Exception as e:
         logging.error(f"Error fetching comments for blog {blog_id}: {e}")
         return []
+    
+def delete_comment(comment_id):
+    try:
+        # Check if the comment exists and get the user_id
+        sql = text("SELECT user_id FROM comments WHERE id = :comment_id")
+        result = db.session.execute(sql, {"comment_id": comment_id}).fetchone()
+
+        user_id = result[0]
+
+        # Check if the current user is the owner of the comment
+        if user_id != session["id"]:
+            return False
+
+        # Delete the comment
+        sql = text("DELETE FROM comments WHERE id = :comment_id")
+        db.session.execute(sql, {"comment_id": comment_id})
+        db.session.commit()
+        return True
+
+    except Exception as e:
+        logging.error(f"Error deleting comment {comment_id}: {e}")
+        return False
+
+
+def delete_blog(blog_id):
+    try:
+        # Check if blog exists and get the user_id
+        sql = text("SELECT user_id FROM blogs WHERE id = :blog_id")
+        result = db.session.execute(sql, {"blog_id": blog_id}).fetchone()
+
+        user_id = result[0]
+
+        # Check if the current user is the owner of the blog
+        if user_id != session["id"]:
+            return False
+        
+        # Delete all comments associated with the blog
+        sql = text("DELETE FROM comments WHERE blog_id = :blog_id")
+        db.session.execute(sql, {"blog_id": blog_id})
+
+        # Delete the blog
+        sql = text("DELETE FROM blogs WHERE id = :blog_id")
+        db.session.execute(sql, {"blog_id": blog_id})
+        db.session.commit()
+        return True
+
+    except Exception as e:
+        logging.error(f"Error deleting blog {blog_id}: {e}")
+        return False
+        

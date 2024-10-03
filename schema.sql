@@ -42,4 +42,4 @@ CREATE TABLE drafts (
 
 /* start-pg.sh */
 
-/*delete account, delete comment, save drafts, edit blog, delete blog*/
+/*delete account, save drafts, edit blog, delete blog*/

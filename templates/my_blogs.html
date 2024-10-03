@@ -10,7 +10,14 @@
             <footer>
                 <p>Uploaded: {{ blog.uploaded_at.strftime('%Y-%m-%d') }}</p>
             </footer>
+            {% if blog.user_id == current_user %}
+                <form action="/delete_blog" method="post" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                    <input type="submit" value="Delete">
+                </form>
+            {% endif %}
         </article>
         {% endfor %}
     </section>
-</body
+</body>
