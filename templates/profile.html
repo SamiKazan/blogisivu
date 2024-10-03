@@ -10,7 +10,8 @@
         <form action="/delete_account" method="post">
             <input type="hidden" name="id" value={{session.id}} />
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            <input type="submit" value="delete account" onclick="return confirm('Are you sure you want to remove account? All blogs will be removed.')" />
+            <input type="submit" value="delete account" 
+                onclick="return confirm('Are you sure you want to remove account? All blogs will be removed.')" />
         </form>
 
 

@@ -161,6 +161,10 @@ def delete_blog(blog_id):
         sql = text("DELETE FROM comments WHERE blog_id = :blog_id")
         db.session.execute(sql, {"blog_id": blog_id})
 
+        # Delete all likes associated with the blog
+        sql = text("DELETE FROM likes WHERE blog_id = :blog_id")
+        db.session.execute(sql, {"blog_id": blog_id})
+
         # Delete the blog
         sql = text("DELETE FROM blogs WHERE id = :blog_id")
         db.session.execute(sql, {"blog_id": blog_id})
@@ -171,3 +175,28 @@ def delete_blog(blog_id):
         logging.error(f"Error deleting blog {blog_id}: {e}")
         return False
         
+
+def delete_account():
+    try:
+        user_id = session["id"]
+
+        sql = text("SELECT * FROM blogs WHERE user_id = :user_id")
+        blogs = db.session.execute(sql, {"user_id": user_id}).fetchall()
+
+        for i in blogs:
+            delete_blog(i.id)
+
+        sql = text("DELETE FROM likes WHERE id = :user_id")
+        db.session.execute(sql, {"user_id": user_id})
+
+        sql = text("DELETE FROM users WHERE id = :user_id")
+        db.session.execute(sql, {"user_id": user_id})
+
+
+
+        db.session.commit()
+        return True
+
+    except Exception as e:
+        logging.error(f"Error deleting account for user {user_id}: {e}")
+        return False

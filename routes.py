@@ -114,7 +114,10 @@ def my_blogs():
 @app.route("/profile")
 def profile():
     own_blogs = blogs.own_blogs()
-    return render_template("profile.html", blogs=own_blogs)
+    current_user = session["id"]
+
+    return render_template("profile.html", blogs=own_blogs, current_user=current_user)
+
 
 #comment on specific blog
 @app.route("/comment_blog", methods=["POST"])
@@ -128,6 +131,7 @@ def comment_blog():
     if blogs.comment_blog(comment, blog_id):
         return redirect(f"/blog/{blog_id}")
     return "Failed to comment"
+
 
 #like specific blog
 @app.route("/like_blog", methods=["POST"])
@@ -172,3 +176,14 @@ def delete_blog():
     if blogs.delete_blog(blog_id):
         return redirect(f"/my_blogs")
     return "Failed to delete blog", 400
+
+
+@app.route("/delete_account", methods=["POST"])
+def delete_account():
+    if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
+    if blogs.delete_account():
+        logout()
+        return redirect("/")
+    return "Failed to delete account", 400

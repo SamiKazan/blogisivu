@@ -2,6 +2,7 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT,
     password TEXT
+    /* ehkä kuvan lisäys*/
 );
 
 CREATE TABLE blogs (
@@ -42,4 +43,4 @@ CREATE TABLE drafts (
 
 /* start-pg.sh */
 
-/*delete account, save drafts, edit blog, delete blog*/
+/* save drafts, edit blog enää jälel*/

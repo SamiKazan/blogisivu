@@ -14,7 +14,8 @@
                 <form action="/delete_blog" method="post" style="display:inline;">
                     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                    <input type="submit" value="Delete">
+                    <input type="submit" value="Delete"
+                        onclick="return confirm('Are you sure you want to remove blog? All comments will also be deleted.')">
                 </form>
             {% endif %}
         </article>
