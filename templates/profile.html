@@ -20,6 +20,11 @@
             <input type="submit" value="my blogs" />
         </form>
 
+        <form action="/my_drafts" method="get">
+            <input type="hidden" name="id" value={{session.id}} />
+            <input type="submit" value="my drafts" />
+        </form>
+
     {% else %}
         USER NOT LOGGED IN
         <a href="/login">Login</a>

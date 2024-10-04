@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, request, redirect, session, abort
 import users
 import blogs
+import drafts
 
 
 #returns to main page
@@ -69,6 +70,7 @@ def create_blog():
         genre = request.form["genre"]
         title = request.form["title"]
         content = request.form["content"]
+        action = request.form["action"]
 
         if not title or not content:
             return render_template("create_blog.html", error="Title and content are required")
@@ -77,8 +79,14 @@ def create_blog():
         if len(content) > 5000:
             return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
         
-        if blogs.create_blog(genre, title, content):
-            return redirect("/my_blogs")
+        if action == "blog":
+            if blogs.create_blog(genre, title, content):
+                return redirect("/my_blogs")
+            
+        if action == "draft":
+            if drafts.create_draft(genre, title, content):
+                return redirect("my_drafts")
+            
         return render_template("create_blog.html", error="Error creating blog")
 
 
@@ -103,7 +111,7 @@ def blog(id):
     else:
         return render_template("index.html", error="Blog not found")
 
-
+#returns users' blogs
 @app.route("/my_blogs")
 def my_blogs():
     own_blogs = blogs.own_blogs()
@@ -153,6 +161,7 @@ def like_blog():
                            error="You have already liked this blog", current_user=current_user)
 
 
+#deletes comment from blog
 @app.route("/delete_comment", methods=["POST"])
 def delete_comment():
     comment_id = request.form["comment_id"]
@@ -166,6 +175,7 @@ def delete_comment():
     return "Failed to delete comment", 400
     
 
+#delete users' blog
 @app.route("/delete_blog", methods=["POST"])
 def delete_blog():
     blog_id = request.form["blog_id"]
@@ -178,6 +188,7 @@ def delete_blog():
     return "Failed to delete blog", 400
 
 
+#deletes users' account
 @app.route("/delete_account", methods=["POST"])
 def delete_account():
     if session["csrf_token"] != request.form["csrf_token"]:
@@ -185,5 +196,26 @@ def delete_account():
 
     if blogs.delete_account():
         logout()
-        return redirect("/")
     return "Failed to delete account", 400
+
+#returns users' drafts
+@app.route("/my_drafts")
+def my_drafts():
+    own_drafts = drafts.own_drafts()
+    current_user = session["id"]
+    return render_template("my_drafts.html", drafts=own_drafts, current_user=current_user)
+
+
+#delete users' drafts
+@app.route("/delete_draft", methods=["POST"])
+def delete_draft():
+    draft_id = request.form["draft_id"]
+    
+    if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+    
+    if drafts.delete_draft(draft_id):
+        return redirect(f"/my_drafts")
+    return "Failed to delete draft", 400
+
+
