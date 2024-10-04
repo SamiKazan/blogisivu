@@ -37,10 +37,9 @@ CREATE TABLE drafts (
     title TEXT,
     genre TEXT,
     content TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 /* start-pg.sh */
 
-/* save drafts, edit blog enää jälel*/
+/* edit blog, edit draft*/

@@ -219,3 +219,41 @@ def delete_draft():
     return "Failed to delete draft", 400
 
 
+#returns spesific draft
+@app.route("/my_drafts/<int:id>")
+def draft(id):
+    try:
+        draft_data = drafts.get_draft_by_id(id)
+        current_user = session["id"]
+        print(draft_data, "draft")
+
+        if draft_data:
+            return render_template("edit_draft.html", draft=draft_data, current_user=current_user)
+        else:
+            return render_template("index.html", error="Draft not found")
+    except Exception as e:
+        return render_template("index.html", error="An error occurred while fetching the draft")
+    
+
+#edits draft and returns my_drafts
+@app.route("/edit_draft", methods=["POST"])
+def edit_draft():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
+    genre = request.form["genre"]
+    title = request.form["title"]
+    content = request.form["content"]
+    draft_id = request.form["draft_id"]
+
+    if not title or not content:
+        return render_template("create_blog.html", error="Title and content are required")
+    if len(title) > 100:
+        return render_template("create_blog.html", error="Title is too long (max 100 characters)")
+    if len(content) > 5000:
+        return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
+    
+    if drafts.edit_draft(genre, title, content, draft_id):
+        return redirect("my_drafts")
+        
+    return render_template("create_blog.html", error="Error editing blog")

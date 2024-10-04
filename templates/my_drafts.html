@@ -18,6 +18,13 @@
                     <input type="submit" value="Delete"
                         onclick="return confirm('Are you sure you want to remove draft?')">
                 </form>
+                <form action="/my_drafts/{{draft.id}}" method="get" style="display:inline;">
+                    <input type="submit" value="Edit">
+                </form>
+                <form action="/my_drafts/{{draft.id}}" method="get" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    <input type="submit" value="Edit">
+                </form>
             {% endif %}
             
         </article>

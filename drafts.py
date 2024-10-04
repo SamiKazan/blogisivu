@@ -56,5 +56,58 @@ def delete_draft(draft_id):
         return True
 
     except Exception as e:
-        logging.error(f"Error deleting blog {draft_id}: {e}")
+        logging.error(f"Error deleting draft {draft_id}: {e}")
         return False
+    
+
+def get_draft_by_id(draft_id):
+    try:
+        sql = text("SELECT user_id FROM drafts WHERE id = :draft_id")
+        result = db.session.execute(sql, {"draft_id": draft_id}).fetchone()
+
+        user_id = result[0]
+
+        # Check if the current user is the owner of the draft
+        if user_id != session["id"]:
+            return False
+        
+        sql = text("SELECT * FROM drafts WHERE user_id = :user_id AND id = :draft_id")
+        result = db.session.execute(sql, {"user_id": user_id, "draft_id": draft_id})
+        draft = result.fetchone()
+        return draft
+
+    except Exception as e:
+        logging.error(f"Error editing draft {draft_id}: {e}")
+        return False
+    
+
+def edit_draft(genre, title, content, draft_id):
+    try:        
+        sql = text("SELECT user_id FROM drafts WHERE id = :draft_id")
+        result = db.session.execute(sql, {"draft_id": draft_id}).fetchone()
+
+        user_id = result[0]
+
+        # Check if the current user is the owner of the draft
+        if user_id != session["id"]:
+            return False
+        
+        sql = text("""
+            UPDATE drafts
+            SET genre = :genre, title = :title, content = :content
+            WHERE user_id = :user_id AND id = :draft_id
+        """)        
+        db.session.execute(sql, {
+            "genre": genre,
+            "title": title,
+            "content": content,
+            "user_id": user_id,
+            "draft_id": draft_id
+        })
+        db.session.commit()       
+        return True
+
+    except Exception as e:
+        logging.error(f"Error editing draft {draft_id}: {e}")
+        return False
+    
