@@ -21,9 +21,10 @@
                 <form action="/my_drafts/{{draft.id}}" method="get" style="display:inline;">
                     <input type="submit" value="Edit">
                 </form>
-                <form action="/my_drafts/{{draft.id}}" method="get" style="display:inline;">
+                <form action="/post_draft/{{draft.id}}" method="post" style="display:inline;">
                     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                    <input type="submit" value="Edit">
+                    <input type="hidden" name="draft_id" value="{{ draft.id }}">
+                    <input type="submit" value="Post">
                 </form>
             {% endif %}
             

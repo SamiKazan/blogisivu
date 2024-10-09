@@ -79,11 +79,11 @@ def create_blog():
         if len(content) > 5000:
             return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
         
-        if action == "blog":
+        if action == "post blog":
             if blogs.create_blog(genre, title, content):
                 return redirect("/my_blogs")
             
-        if action == "draft":
+        if action == "create draft":
             if drafts.create_draft(genre, title, content):
                 return redirect("my_drafts")
             
@@ -257,3 +257,18 @@ def edit_draft():
         return redirect("my_drafts")
         
     return render_template("create_blog.html", error="Error editing blog")
+
+@app.route("/post_draft/<int:id>", methods=["POST"])
+def post_draft(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    
+    draft_data = drafts.get_draft_by_id(id)
+
+    if blogs.create_blog(draft_data.genre, draft_data.title, draft_data.content):
+        drafts.delete_draft(id)
+        own_blogs = blogs.own_blogs()
+        current_user = session["id"]
+        return render_template("my_blogs.html", blogs=own_blogs, current_user=current_user)
+        
+    return render_template("my_drafts", error="Error creating blog from draft")
