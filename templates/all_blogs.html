@@ -2,7 +2,6 @@
 
 <title>All Blogs</title>
 
-
 {% block content %}
 <h1>All Blogs</h1>
 
@@ -11,7 +10,9 @@
     {% for blog in blogs %}
     <article class="blog-post">
         <h2><a href="/blog/{{ blog.id }}">{{ blog.title }}</a></h2>
-        <p>{{ blog.content }}</p>
+        <p>{{ blog.content | safe}}</p><!-- jos näkyis vaa ekat 20 merkkiä tai 2 rivii 
+        ja sit ...-->
+        <!-- ehkä liketkin näkyviin-->
         <footer>
             <p>By {{ blog.username }}</p>
         </footer>

@@ -1,31 +1,29 @@
 {% extends "layout.html" %}
 
-<title>Etusivu</title>
+<title>front page</title>
 
 {% block content %}
 <h1>Blogsite</h1>
+
 {{ error }}
-{% if session.username %}
-<p>Logged in as {{ session.username }}</p>
 
-
-<h2>Most popular blog</h2>
-
-<p><b><a href="/blog/{{ most_liked_blog.id }}">{{ most_liked_blog.title }}</a></b></p>
-
-<p>{{ most_liked_blog.content }}</p>
+{% if session.id %}
+<div class="most_popular">
+    <h2>Most popular blog</h2>
+    <div class="content">
+        <p><b><a href="/blog/{{ most_liked_blog.id }}">{{ most_liked_blog.title }}</a></b></p>
+        <p>{{ most_liked_blog.content | safe }}</p>
+    </div>
+</div>
 
 {% else %}
-<button onclick="location.href='/login'">Login</button>
-<p>Dont have an account?</p>
-<button onclick="location.href='/create_account'">Create account</button>
-
-
-<h2>Most popular blog</h2>
-
-<p><b>{{ most_liked_blog.title }}</b></p>
-
-<p>{{ most_liked_blog.content }}</p>
+<h3>Login to access more features</h3>
+<div class="most_popular"></div>
+    <h2>Most popular blog</h2>
+    <div class="content">
+        <p><b>{{ most_liked_blog.title }}</b></p>
+        <p>{{ most_liked_blog.content | safe }}</p>
+    </div>
+</div>
 {% endif %}
-
 {% endblock %}

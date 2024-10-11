@@ -2,32 +2,24 @@
 
 <title>Create blog</title>
 
-
 {% block content %}
+
 <h1>Create blog</h1>
 {% if session.id %}
-<p>Logged in as {{ session.username }}</p>
-<a href="/logout">Log out</a>
-
-
 {{error}}
 
 <form action="/create_blog" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <p>Title</p>
     <input type="text" name="title" placeholder="Title">
-    <textarea name="content" placeholder="Content" rows="10" cols="50"></textarea>
+    <p>Content</p>
+    <textarea name="content" placeholder="Content" rows="20" cols="50"></textarea>
     <input type="submit" name="action" value="post blog">
     <input type="submit" name="action" value="create draft">
 </form>
 
-
-
 {% else %}
 <p>Login to create a blog post</p>
-<button onclick="location.href='/login'">Login</button>
-<p>Dont have an account?</p>
-<button onclick="location.href='/create_account'">Create account</button>
-{% endif %}
 
+{% endif %}
 {% endblock %}

@@ -1,32 +1,27 @@
-<body>
+<link rel="stylesheet" href="/static/style.css">
+<body class="topbar">
     <nav>
-        <ul>
-            <li>
-                <a href="/">Front page</a>
-            </li>
+        <div class="side-by-side-container">
             {% if session.id %}
-                <li>
+            <div class="layout_element"><a href="/">Front page</a></div>
+            <div class="layout_element"><a href="/all_blogs">All blogs</a></div>
+            <div class="layout_element"><a href="/create_blog">Create blog</a></div>
+            <div class="layout_element"><a href="/my_drafts">Drafts</a></div>
+
+            <div class="layout_element dropdown">
+                <a href="/profile">{{ session.username }}</a>
+                <div class="dropdown-content">
                     <a href="/profile">Profile</a>
-                </li>
-                <li>
-                    <a href="/my_drafts">Drafts</a>
-                </li>
-                <li>
-                    <a href="/create_blog">Create blog</a>
-                </li>
-                <li>
                     <a href="/logout">Logout</a>
-                </li>
+                </div>
+            </div>
             {% else %}
-                <li> <a href="/login">Log in</a> </li>
-                <li> <a href="/create_account">Create account</a> </li>
+            <div class="layout_element"><a href="/login">Log in</a></div>
+            <div class="layout_element"><a href="/create_account">Create account</a></div>
             {% endif %}
-            <li> 
-                <a href="/all_blogs">All blogs</a>
-            </li>
-        </ul>
+        </div>
     </nav>
     <hr>
-
-    {% block content %}{% endblock %}
+    {% block content %}
+    {% endblock %}
 </body>

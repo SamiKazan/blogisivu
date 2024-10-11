@@ -5,31 +5,20 @@
 {% block content %}
 
 <h1>Edit draft</h1>
-{% if session.username %}
-<p>Logged in as {{ session.username }}</p>
-<a href="/logout">Log out</a>
-
+{% if session.id %}
 {{error}}
-<p>{{  draft.content  }}{{  draft.title  }}{{  draft.genre }}</p>
+
 <form action="/edit_draft" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="draft_id" value="{{ draft.id }}">
-    
     <p>Title</p>
     <input type="text" name="title" placeholder="Title" value="{{ draft.title }}">
-    
     <p>Content</p>
-    <textarea name="content" placeholder="Content" rows="10" cols="50">{{ draft.content }}</textarea>
-    
+    <textarea name="content" placeholder="Content" rows="20" cols="50">{{ draft.content }}</textarea>
     <input type="submit" name="action" value="save draft">
 </form>
-
-
 {% else %}
 <p>Login to create a blog post</p>
-<button onclick="location.href='/login'">Login</button>
-<p>Dont have an account?</p>
-<button onclick="location.href='/create_account'">Create account</button>
-{% endif %}
 
+{% endif %}
 {% endblock %}
