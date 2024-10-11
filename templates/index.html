@@ -1,18 +1,31 @@
+{% extends "layout.html" %}
+
 <title>Etusivu</title>
+
+{% block content %}
 <h1>Blogsite</h1>
 {{ error }}
 {% if session.username %}
 <p>Logged in as {{ session.username }}</p>
-<a href="/logout">Log out</a>
-<br>
-<a href="/create_blog"> Create new blog</a>
-<br>
-<a href="/all_blogs">All Blogs</a>
-<br>
-<a href="/profile">Profile</a>
+
+
+<h2>Most popular blog</h2>
+
+<p><b><a href="/blog/{{ most_liked_blog.id }}">{{ most_liked_blog.title }}</a></b></p>
+
+<p>{{ most_liked_blog.content }}</p>
 
 {% else %}
 <button onclick="location.href='/login'">Login</button>
 <p>Dont have an account?</p>
 <button onclick="location.href='/create_account'">Create account</button>
+
+
+<h2>Most popular blog</h2>
+
+<p><b>{{ most_liked_blog.title }}</b></p>
+
+<p>{{ most_liked_blog.content }}</p>
 {% endif %}
+
+{% endblock %}

@@ -1,6 +1,11 @@
+{% extends "layout.html" %}
+
 <title>Create blog</title>
+
+
+{% block content %}
 <h1>Create blog</h1>
-{% if session.username %}
+{% if session.id %}
 <p>Logged in as {{ session.username }}</p>
 <a href="/logout">Log out</a>
 
@@ -9,8 +14,6 @@
 
 <form action="/create_blog" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <p>Genre</p>
-    <input type="text" name="genre" placeholder="Genre">
     <p>Title</p>
     <input type="text" name="title" placeholder="Title">
     <textarea name="content" placeholder="Content" rows="10" cols="50"></textarea>
@@ -26,3 +29,5 @@
 <p>Dont have an account?</p>
 <button onclick="location.href='/create_account'">Create account</button>
 {% endif %}
+
+{% endblock %}

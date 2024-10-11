@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 
-<title>All Blogs</title>
+<title>Liked Blogs</title>
 
 
 {% block content %}
-<h1>All Blogs</h1>
+<h1>Liked Blogs</h1>
 
-{% if session.id %}
+{% if session.id == current_user %}
 <section id="blogs">
     {% for blog in blogs %}
     <article class="blog-post">
@@ -19,16 +19,7 @@
     {% endfor %}
 </section>
 {% else %}
-<section id="blogs">
-    {% for blog in blogs %}
-    <article class="blog-post">
-        <h2>{{ blog.title }}</a></h2>
-        <p>{{ blog.content }}</p>
-        <footer>
-            <p>By {{ blog.username }}</p>
-        </footer>
-    </article>
-    {% endfor %}
+<p><a href="login">Login</a>to like blogs</p>
 </section>
 {% endif %}
 

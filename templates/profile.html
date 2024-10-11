@@ -1,3 +1,5 @@
+{% extends "layout.html" %}
+
 {% block content %}
     <title>Account</title>
     <h1>Account</h1>
@@ -5,7 +7,7 @@
     {% if session.username %}
         Logged in as {{ session.username }} 
         <br> 
-        <a href="/logout">Log out</a> <br> <br>
+        <br>
 
         <form action="/delete_account" method="post">
             <input type="hidden" name="id" value={{session.id}} />
@@ -14,19 +16,18 @@
                 onclick="return confirm('Are you sure you want to remove account? All blogs will be removed.')" />
         </form>
 
-
         <form action="/my_blogs" method="get">
             <input type="hidden" name="id" value={{session.id}} />
             <input type="submit" value="my blogs" />
         </form>
 
-        <form action="/my_drafts" method="get">
+        <form action="/liked_blogs" method="get">
             <input type="hidden" name="id" value={{session.id}} />
-            <input type="submit" value="my drafts" />
+            <input type="submit" value="liked blogs" />
         </form>
 
     {% else %}
-        USER NOT LOGGED IN
+        You are not logged in
         <a href="/login">Login</a>
         Dont have an account?
         <a href="/create_user">Create account</a>

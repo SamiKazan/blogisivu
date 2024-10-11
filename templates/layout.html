@@ -1,0 +1,32 @@
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a href="/">Front page</a>
+            </li>
+            {% if session.id %}
+                <li>
+                    <a href="/profile">Profile</a>
+                </li>
+                <li>
+                    <a href="/my_drafts">Drafts</a>
+                </li>
+                <li>
+                    <a href="/create_blog">Create blog</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            {% else %}
+                <li> <a href="/login">Log in</a> </li>
+                <li> <a href="/create_account">Create account</a> </li>
+            {% endif %}
+            <li> 
+                <a href="/all_blogs">All blogs</a>
+            </li>
+        </ul>
+    </nav>
+    <hr>
+
+    {% block content %}{% endblock %}
+</body>

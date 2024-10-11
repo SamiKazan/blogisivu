@@ -1,11 +1,14 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
 <body>
     {{error}}
     <h1>{{ blog.title }}</h1>
     <p><strong>Author:</strong> {{ blog.username }}</p>
-    <p><strong>Genre:</strong> {{ blog.genre }}</p>
     <p><strong>Uploaded:</strong> {{ blog.uploaded_at.strftime('%d/%m/%Y') }}</p>
-    <div>
-        <p>{{ blog.content }}</p>
+    <div><!-- ei oo varmaan turvallinen XSS vastaan-->
+        <p>{{ blog.content | safe }}</p>
     </div>
     <p>Likes: {{  likes  }}</p>
     <form action="/like_blog" method="post">
@@ -14,13 +17,11 @@
         <input type="submit" value="Like">
     </form>
 
-    <a href="/all_blogs">Back to all blogs</a>
-
     <h3>Comments:</h3>
     <form action="/comment_blog" method="post">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <input type="hidden" name="blog_id" value="{{ blog.id }}">
-        <textarea name="comment" placeholder="Content" rows="10" cols="50"></textarea>
+        <textarea name="comment" placeholder="Comment" rows="10" cols="50"></textarea>
         <input type="submit" value="Create comment">
     </form>
     <ul>
@@ -41,3 +42,4 @@
         {% endfor %}
     </ul>
 </body>
+{% endblock %}

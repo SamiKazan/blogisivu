@@ -1,4 +1,9 @@
+{% extends "layout.html" %}
+
 <title>Edit draft</title>
+
+{% block content %}
+
 <h1>Edit draft</h1>
 {% if session.username %}
 <p>Logged in as {{ session.username }}</p>
@@ -9,8 +14,6 @@
 <form action="/edit_draft" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="draft_id" value="{{ draft.id }}">
-    <p>Genre</p>
-    <input type="text" name="genre" placeholder="Genre" value="{{ draft.genre }}">
     
     <p>Title</p>
     <input type="text" name="title" placeholder="Title" value="{{ draft.title }}">
@@ -28,3 +31,5 @@
 <p>Dont have an account?</p>
 <button onclick="location.href='/create_account'">Create account</button>
 {% endif %}
+
+{% endblock %}

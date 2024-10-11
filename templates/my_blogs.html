@@ -1,5 +1,12 @@
+{% extends "layout.html" %}
+
 <title>My Blogs</title>
 
+{% block content %}
+
+{% if not blogs %}
+<p>You have not posted any blogs yet. <a href="create_blog">Click here</a> to create one!</p>
+{% else %}
 <body>
     <h1>My Blogs</h1>
     <section id="blogs">
@@ -22,3 +29,6 @@
         {% endfor %}
     </section>
 </body>
+
+{% endif %}
+{% endblock %}
