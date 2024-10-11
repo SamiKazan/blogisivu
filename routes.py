@@ -8,7 +8,8 @@ import drafts
 #returns to main page
 @app.route("/")
 def index():
-    return render_template("index.html")
+    most_liked_blog = blogs.get_most_liked_blog()
+    return render_template("index.html", most_liked_blog=most_liked_blog)
 
 
 #returns to create_account page
@@ -67,7 +68,6 @@ def create_blog():
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
 
-        genre = request.form["genre"]
         title = request.form["title"]
         content = request.form["content"]
         action = request.form["action"]
@@ -80,11 +80,11 @@ def create_blog():
             return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
         
         if action == "post blog":
-            if blogs.create_blog(genre, title, content):
+            if blogs.create_blog(title, content):
                 return redirect("/my_blogs")
             
         if action == "create draft":
-            if drafts.create_draft(genre, title, content):
+            if drafts.create_draft(title, content):
                 return redirect("my_drafts")
             
         return render_template("create_blog.html", error="Error creating blog")
@@ -136,6 +136,7 @@ def comment_blog():
     if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
 
+    #vois lisää että kommentti on max 100 merkkiä ja oikee returni jos failaa
     if blogs.comment_blog(comment, blog_id):
         return redirect(f"/blog/{blog_id}")
     return "Failed to comment"
@@ -241,7 +242,6 @@ def edit_draft():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    genre = request.form["genre"]
     title = request.form["title"]
     content = request.form["content"]
     draft_id = request.form["draft_id"]
@@ -253,7 +253,7 @@ def edit_draft():
     if len(content) > 5000:
         return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
     
-    if drafts.edit_draft(genre, title, content, draft_id):
+    if drafts.edit_draft(title, content, draft_id):
         return redirect("my_drafts")
         
     return render_template("create_blog.html", error="Error editing blog")
@@ -265,10 +265,21 @@ def post_draft(id):
     
     draft_data = drafts.get_draft_by_id(id)
 
-    if blogs.create_blog(draft_data.genre, draft_data.title, draft_data.content):
+    if blogs.create_blog(draft_data.title, draft_data.content):
         drafts.delete_draft(id)
         own_blogs = blogs.own_blogs()
         current_user = session["id"]
         return render_template("my_blogs.html", blogs=own_blogs, current_user=current_user)
         
     return render_template("my_drafts", error="Error creating blog from draft")
+
+
+@app.route("/liked_blogs", methods=["GET"])
+def liked_blogs():
+
+    liked_blogs = blogs.liked_blogs()
+
+    current_user = session["id"]
+
+    if blogs.liked_blogs():
+        return render_template("liked_blogs.html", blogs=liked_blogs, current_user=current_user)

@@ -2,17 +2,18 @@ from flask import session
 from sqlalchemy.sql import text
 from db import db
 import logging
+from utils import sanitizer
 
 #inserts new blog into blogs table
-def create_draft(genre, title, content):
+def create_draft(title, content):
     try:
-        sql = text("INSERT INTO drafts (user_id, title, genre, content, created_at) VALUES (:user_id, :title, :genre, :content, NOW())")
+        safe_content = sanitizer.sanitize_and_convert_newlines(content)
+        sql = text("INSERT INTO drafts (user_id, title, content, created_at) VALUES (:user_id, :title, :content, NOW())")
         
         db.session.execute(sql, {
             "user_id": session["id"],
             "title": title,
-            "genre": genre,
-            "content": content
+            "content": safe_content
         })
         db.session.commit()
         return True
@@ -81,7 +82,7 @@ def get_draft_by_id(draft_id):
         return False
     
 
-def edit_draft(genre, title, content, draft_id):
+def edit_draft(title, content, draft_id):
     try:        
         sql = text("SELECT user_id FROM drafts WHERE id = :draft_id")
         result = db.session.execute(sql, {"draft_id": draft_id}).fetchone()
@@ -94,11 +95,10 @@ def edit_draft(genre, title, content, draft_id):
         
         sql = text("""
             UPDATE drafts
-            SET genre = :genre, title = :title, content = :content
+            SET title = :title, content = :content
             WHERE user_id = :user_id AND id = :draft_id
         """)        
         db.session.execute(sql, {
-            "genre": genre,
             "title": title,
             "content": content,
             "user_id": user_id,

@@ -2,18 +2,19 @@ from flask import session
 from sqlalchemy.sql import text
 from db import db
 import logging
+from utils import sanitizer
 
 #inserts new blog into blogs table
-def create_blog(genre, title, content):
+def create_blog(title, content):
     try:
-        sql = text("INSERT INTO blogs (user_id, username, title, genre, content, uploaded_at) VALUES (:user_id, :username, :title, :genre, :content, NOW())")
+        safe_content = sanitizer.sanitize_and_convert_newlines(content)
+        sql = text("INSERT INTO blogs (user_id, username, title, content, uploaded_at) VALUES (:user_id, :username, :title, :content, NOW())")
         
         db.session.execute(sql, {
             "user_id": session["id"],
             "username": session["username"],
             "title": title,
-            "genre": genre,
-            "content": content
+            "content": safe_content
         })
         db.session.commit()
         return True
@@ -200,3 +201,40 @@ def delete_account():
     except Exception as e:
         logging.error(f"Error deleting account for user {user_id}: {e}")
         return False
+    
+
+def get_most_liked_blog():
+    try:
+        sql = text("""
+            SELECT b.*, COUNT(l.user_id) as like_count
+            FROM blogs b
+            LEFT JOIN likes l ON b.id = l.blog_id
+            GROUP BY b.id
+            ORDER BY like_count DESC
+            LIMIT 1
+        """)
+        result = db.session.execute(sql)
+        blog = result.fetchone()
+        return blog
+    except Exception as e:
+        logging.error(f"Error fetching most liked blog: {e}")
+        return None
+
+
+def liked_blogs():
+    try:
+        user_id = session["id"]
+
+        sql = text("""
+            SELECT b.*
+            FROM blogs b
+            JOIN likes l ON b.id = l.blog_id
+            WHERE l.user_id = :user_id
+        """)
+        result = db.session.execute(sql, {"user_id": user_id})
+        blogs = result.fetchall()
+        return blogs
+
+    except Exception as e:
+        logging.error(f"Error fetching liked blogs: {e}")
+        return None
