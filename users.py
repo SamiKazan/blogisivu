@@ -25,7 +25,7 @@ def create_account(username, password):
         
         return True
     except:
-        print("error")
+        print("error creating account")
         return False
     
 

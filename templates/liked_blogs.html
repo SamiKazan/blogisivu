@@ -2,26 +2,27 @@
 
 <title>Liked Blogs</title>
 
-
 {% block content %}
 <h1>Liked Blogs</h1>
-
-{% if session.id == current_user %}
-<section id="blogs">
-    {% for blog in blogs %}
-    <article class="blog-post">
-        <h2><a href="/blog/{{ blog.id }}">{{ blog.title }}</a></h2>
-        <p>{{ blog.content }}</p>
-        <footer>
-            <p>By {{ blog.username }}</p>
-        </footer>
-    </article>
-    {% endfor %}
-</section>
+{% if not blogs %}
+    <p>You have not liked any blogs yet</p>
 {% else %}
-<p><a href="login">Login</a>to like blogs</p>
-</section>
+    {% if session.id == current_user %}
+        <section id="blogs">
+            {% for blog in blogs %}
+            <article class="blog-post">
+                <h2><a href="/blog/{{ blog.id }}">{{ blog.title }}</a></h2>
+                <p>{{ blog.content }}</p>
+                <footer>
+                    <p>By {{ blog.username }}</p>
+                </footer>
+            </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <p><a href="login">Login</a>to like blogs</p>
+        </section>
+    {% endif %}
 {% endif %}
-
 
 {% endblock %}

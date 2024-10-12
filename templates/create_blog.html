@@ -8,7 +8,7 @@
 {% if session.id %}
 {{error}}
 
-<form action="/create_blog" method="post">
+<form action="/create_blog" method="post" onsubmit="return check(this)">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <p>Title</p>
     <input type="text" name="title" placeholder="Title">
@@ -22,4 +22,17 @@
 <p>Login to create a blog post</p>
 
 {% endif %}
+<script>
+    function check(form) {
+        if (form.title.value.length > 30 || form.title.value.length < 3) {
+            alert("Title must be between 3-30 characters long")
+            return false;
+        }
+        if (form.content.value.length > 5000 || form.content.value.length < 5) {
+            alert("Content must be between 5-5000 characters long")
+            return false;
+        }
+        return true;
+    }
+</script>
 {% endblock %}

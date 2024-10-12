@@ -2,12 +2,13 @@
 
 
 {% block content %}
+{% if session.id %}
 <body>
     {{error}}
     <h1>{{ blog.title }}</h1>
     <p><strong>Author:</strong> {{ blog.username }}</p>
     <p><strong>Uploaded:</strong> {{ blog.uploaded_at.strftime('%d/%m/%Y') }}</p>
-    <div><!-- ei oo varmaan turvallinen XSS vastaan-->
+    <div>
         <p>{{ blog.content | safe }}</p>
     </div>
     <p>Likes: {{  likes  }}</p>
@@ -42,4 +43,7 @@
         {% endfor %}
     </ul>
 </body>
+{% else %}
+<p>Login to access this feature</p>
+{% endif %}
 {% endblock %}

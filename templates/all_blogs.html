@@ -10,9 +10,7 @@
     {% for blog in blogs %}
     <article class="blog-post">
         <h2><a href="/blog/{{ blog.id }}">{{ blog.title }}</a></h2>
-        <p>{{ blog.content | safe}}</p><!-- jos näkyis vaa ekat 20 merkkiä tai 2 rivii 
-        ja sit ...-->
-        <!-- ehkä liketkin näkyviin-->
+        <p>{{ blog.content[:30] | safe}}...</p>
         <footer>
             <p>By {{ blog.username }}</p>
         </footer>
@@ -20,18 +18,6 @@
     {% endfor %}
 </section>
 {% else %}
-<section id="blogs">
-    {% for blog in blogs %}
-    <article class="blog-post">
-        <h2>{{ blog.title }}</a></h2>
-        <p>{{ blog.content }}</p>
-        <footer>
-            <p>By {{ blog.username }}</p>
-        </footer>
-    </article>
-    {% endfor %}
-</section>
+<p>Login to access this features</p>
 {% endif %}
-
-
 {% endblock %}

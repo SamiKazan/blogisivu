@@ -8,7 +8,7 @@
 {% if session.id %}
 {{error}}
 
-<form action="/edit_draft" method="post">
+<form action="/edit_draft" method="post" onsubmit="return check(this)">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="draft_id" value="{{ draft.id }}">
     <p>Title</p>
@@ -21,4 +21,17 @@
 <p>Login to create a blog post</p>
 
 {% endif %}
+<script>
+    function check(form) {
+        if (form.title.value.length > 30 || form.title.value.length < 3) {
+            alert("Title must be between 3-30 characters long")
+            return false;
+        }
+        if (form.content.value.length > 5000 || form.content.value.length < 5) {
+            alert("Content must be between 5-5000 characters long")
+            return false;
+        }
+        return true;
+    }
+</script>
 {% endblock %}

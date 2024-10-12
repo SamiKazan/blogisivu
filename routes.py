@@ -21,14 +21,20 @@ def create_account():
         return render_template("create_account.html")
     
     if request.method == 'POST':
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         username = request.form["username"]
         password = request.form["password"]
 
         if len(username) < 3 or len(username) > 20:
-            return render_template("create_account.html", error="Invalid username (must be between 3-50 charecters)")
+            return render_template("create_account.html", error="Invalid username (must be between 3-20 charecters)")
         
         if len(password) > 50:
-            return render_template("create_account.html", error="Invalid password (too long)")
+            return render_template("create_account.html", error="Password must be less than 50 characters")
+        
+        if len(password) < 5:
+            return render_template("create_account.html", error="Password must be atleast 5 characters long")
         
         if users.create_account(username, password):
             return redirect("/")
@@ -42,6 +48,9 @@ def login():
         return render_template("login.html")
     
     if request.method == 'POST':
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+            
         username = request.form["username"]
         password = request.form["password"]
 
@@ -276,10 +285,10 @@ def post_draft(id):
 
 @app.route("/liked_blogs", methods=["GET"])
 def liked_blogs():
-
     liked_blogs = blogs.liked_blogs()
-
     current_user = session["id"]
 
     if blogs.liked_blogs():
         return render_template("liked_blogs.html", blogs=liked_blogs, current_user=current_user)
+    
+    return render_template("liked_blogs.html", blogs=[], current_user=current_user)

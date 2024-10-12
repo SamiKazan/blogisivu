@@ -13,9 +13,13 @@
         {% for blog in blogs %}
         <article class="blog-post">
             <h2><a href="/blog/{{ blog.id }}">{{ blog.title }}</a></h2>
-            <p>{{ blog.content }}</p>
+            {% if blog.content|length > 30 %}
+            <p>{{ blog.content[:30] | safe }}...</p>
+            {% else %}
+            <p>{{ blog.content | safe }}</p>
+            {% endif %}
             <footer>
-                <p>Uploaded: {{ blog.uploaded_at.strftime('%Y-%m-%d') }}</p>
+                <p>Uploaded: {{ blog.uploaded_at.strftime('%d-%m-%Y') }}</p>
             </footer>
             {% if blog.user_id == current_user %}
                 <form action="/delete_blog" method="post" style="display:inline;">
