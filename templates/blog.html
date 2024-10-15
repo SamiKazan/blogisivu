@@ -8,7 +8,7 @@
     <h1>{{ blog.title }}</h1>
     <p><strong>Author:</strong> {{ blog.username }}</p>
     <p><strong>Uploaded:</strong> {{ blog.uploaded_at.strftime('%d/%m/%Y') }}</p>
-    <div>
+    <div class="blog-content">
         <p>{{ blog.content | safe }}</p>
     </div>
     <p>Likes: {{  likes  }}</p>
@@ -46,4 +46,13 @@
 {% else %}
 <p>Login to access this feature</p>
 {% endif %}
+
+<style>
+    .blog-content p {
+        max-width: 140ch; /* Set the maximum width to 140 characters */
+        word-wrap: break-word; /* Break long words */
+        white-space: pre-wrap; /* Preserve whitespace and wrap text */
+    }
+</style>
+
 {% endblock %}

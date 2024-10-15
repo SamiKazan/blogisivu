@@ -21,8 +21,6 @@ def create_account():
         return render_template("create_account.html")
     
     if request.method == 'POST':
-        if session["csrf_token"] != request.form["csrf_token"]:
-            abort(403)
 
         username = request.form["username"]
         password = request.form["password"]
@@ -48,8 +46,6 @@ def login():
         return render_template("login.html")
     
     if request.method == 'POST':
-        if session["csrf_token"] != request.form["csrf_token"]:
-            abort(403)
             
         username = request.form["username"]
         password = request.form["password"]
@@ -83,9 +79,9 @@ def create_blog():
 
         if not title or not content:
             return render_template("create_blog.html", error="Title and content are required")
-        if len(title) > 100:
+        if len(title) > 40:
             return render_template("create_blog.html", error="Title is too long (max 100 characters)")
-        if len(content) > 5000:
+        if len(content) > 4000:
             return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
         
         if action == "post blog":
@@ -204,8 +200,9 @@ def delete_account():
     if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
 
-    if blogs.delete_account():
-        logout()
+    if users.delete_account():
+        session.clear()
+        return redirect("/")
     return "Failed to delete account", 400
 
 #returns users' drafts
@@ -257,9 +254,9 @@ def edit_draft():
 
     if not title or not content:
         return render_template("create_blog.html", error="Title and content are required")
-    if len(title) > 100:
+    if len(title) > 40:
         return render_template("create_blog.html", error="Title is too long (max 100 characters)")
-    if len(content) > 5000:
+    if len(content) > 4000:
         return render_template("create_blog.html", error="Content is too long (max 5000 characters)")
     
     if drafts.edit_draft(title, content, draft_id):

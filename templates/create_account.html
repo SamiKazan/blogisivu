@@ -10,33 +10,20 @@
 {% else %}
 
 <h1>Create account</h1>
-
+    
     {{error}}
 
-<form action="/create_account" method="POST" onsubmit="return check(this)">
+<form action="/create_account" method="POST">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <p>Username</p>
-    <input type="text" name="username" placeholder="Username">
+    <input type="text" name="username" placeholder="Username" required minlength="3">
     <p>Password</p>
-    <input type="password" name="password" placeholder="Password">
+    <input type="password" name="password" placeholder="Password" required minlength="5" maxlength="50">
     <p>Re-enter password</p>
-    <input type="password" name="password2" placeholder="Password">
+    <input type="password" name="password2" placeholder="Password" required >
     <br>
     <br>
     <input type="submit" value="Create account">
 </form>
 {% endif %}
-<script>
-    function check(form) {
-        if (form.password.value.length != form.password2.value.length) {
-            alert("Passwords do not match");
-            return false;
-        }
-        if (form.password.value.length < 5 || form.password.value.length > 50) {
-            alert("Password must be between 5-50 characters long")
-            return false;
-        }
-        return true;
-    }
-</script>
 {% endblock %}

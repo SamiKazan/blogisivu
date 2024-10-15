@@ -8,31 +8,31 @@
 {% if session.id %}
 {{error}}
 
-<form action="/create_blog" method="post" onsubmit="return check(this)">
+<form action="/create_blog" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <p>Title</p>
-    <input type="text" name="title" placeholder="Title">
+    <textarea name="title" placeholder="Title" rows="1"  cols="45" minlength="3" maxlength="40"></textarea>
     <p>Content</p>
-    <textarea name="content" placeholder="Content" rows="20" cols="50"></textarea>
+    <textarea name="content" placeholder="Content" rows="20" cols="140" minlength="5" maxlength="4000"></textarea>
     <input type="submit" name="action" value="post blog">
     <input type="submit" name="action" value="create draft">
 </form>
+
+<script>
+    document.getElementById('create-blog-form').addEventListener('submit', function(event) {
+        const contentTextarea = document.getElementById('content');
+        let content = contentTextarea.value;
+    
+        // Replace more than two consecutive <br> tags with exactly two <br> tags
+        content = content.replace(/(<br\s*\/?>\s*){3,}/gi, '<br><br>');
+    
+        // Update the textarea value
+        contentTextarea.value = content;
+    });
+</script>
 
 {% else %}
 <p>Login to create a blog post</p>
 
 {% endif %}
-<script>
-    function check(form) {
-        if (form.title.value.length > 30 || form.title.value.length < 3) {
-            alert("Title must be between 3-30 characters long")
-            return false;
-        }
-        if (form.content.value.length > 5000 || form.content.value.length < 5) {
-            alert("Content must be between 5-5000 characters long")
-            return false;
-        }
-        return true;
-    }
-</script>
 {% endblock %}

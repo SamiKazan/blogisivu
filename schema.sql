@@ -9,7 +9,6 @@ CREATE TABLE blogs (
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
     username TEXT,
     title TEXT,
-    genre TEXT,
     uploaded_at TIMESTAMP,
     content TEXT
 );
@@ -34,9 +33,6 @@ CREATE TABLE drafts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
     title TEXT,
-    genre TEXT,
     content TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-/* start-pg.sh */

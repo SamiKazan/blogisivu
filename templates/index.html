@@ -12,6 +12,7 @@
     <h2>Most popular blog</h2>
     <div class="content">
         <h3><b><a href="/blog/{{ most_liked_blog.id }}">{{ most_liked_blog.title }}</a></b></h3>
+        <p>Blog content:</p>
         <p>{{ most_liked_blog.content | safe }}</p>
     </div>
 </div>

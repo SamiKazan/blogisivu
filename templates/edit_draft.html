@@ -8,30 +8,17 @@
 {% if session.id %}
 {{error}}
 
-<form action="/edit_draft" method="post" onsubmit="return check(this)">
+<form action="/edit_draft" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="draft_id" value="{{ draft.id }}">
     <p>Title</p>
-    <input type="text" name="title" placeholder="Title" value="{{ draft.title }}">
+    <textarea name="title" placeholder="Title" rows="1"  cols="45" minlength="3" maxlength="40"></textarea>
     <p>Content</p>
-    <textarea name="content" placeholder="Content" rows="20" cols="50">{{ draft.content }}</textarea>
+    <textarea name="content" placeholder="Content" rows="20" cols="140" minlength="5" maxlength="4000">{{ draft.content }}</textarea>
     <input type="submit" name="action" value="save draft">
 </form>
 {% else %}
 <p>Login to create a blog post</p>
 
 {% endif %}
-<script>
-    function check(form) {
-        if (form.title.value.length > 30 || form.title.value.length < 3) {
-            alert("Title must be between 3-30 characters long")
-            return false;
-        }
-        if (form.content.value.length > 5000 || form.content.value.length < 5) {
-            alert("Content must be between 5-5000 characters long")
-            return false;
-        }
-        return true;
-    }
-</script>
 {% endblock %}

@@ -6,6 +6,10 @@
 <h1>All Blogs</h1>
 
 {% if session.id %}
+<form id="search-form">
+    <input type="text" id="search-input" placeholder="Search blogs...">
+</form>
+
 <section id="blogs">
     {% for blog in blogs %}
     <article class="blog-post">
@@ -17,6 +21,26 @@
     </article>
     {% endfor %}
 </section>
+
+<script>
+    document.getElementById('search-input').addEventListener('input', function() {
+        const searchQuery = this.value.toLowerCase();
+        const blogPosts = document.querySelectorAll('.blog-post');
+    
+        blogPosts.forEach(function(post) {
+            const title = post.querySelector('h2').innerText.toLowerCase();
+            const content = post.querySelector('p').innerText.toLowerCase();
+            const author = post.querySelector('footer p').innerText.toLowerCase();
+    
+            if (title.includes(searchQuery) || content.includes(searchQuery) || author.includes(searchQuery)) {
+                post.style.display = '';
+            } else {
+                post.style.display = 'none';
+            }
+        });
+    });
+</script>
+
 {% else %}
 <p>Login to access this features</p>
 {% endif %}

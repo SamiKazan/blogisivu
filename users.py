@@ -3,6 +3,8 @@ from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 import secrets
+import blogs as blog_db
+import logging
 
 def create_account(username, password):
     sql = text("SELECT id FROM users WHERE username=:username")
@@ -48,3 +50,26 @@ def logout():
     del session["username"]
     del session["csrf_token"]
     del session["id"]
+
+def delete_account():
+    try:
+        user_id = session["id"]
+
+        sql = text("SELECT id FROM blogs WHERE user_id = :user_id")
+        blogs = db.session.execute(sql, {"user_id": user_id}).fetchall()
+
+        for blog in blogs:
+            blog_db.delete_blog(blog.id)
+
+        sql = text("DELETE FROM likes WHERE user_id = :user_id")
+        db.session.execute(sql, {"user_id": user_id})
+
+        sql = text("DELETE FROM users WHERE id = :user_id")
+        db.session.execute(sql, {"user_id": user_id})
+
+        db.session.commit()
+        return True
+
+    except Exception as e:
+        logging.error(f"Error deleting account for user {user_id}: {e}")
+        return False
