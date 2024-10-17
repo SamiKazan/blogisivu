@@ -36,3 +36,4 @@ CREATE TABLE drafts (
     content TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+

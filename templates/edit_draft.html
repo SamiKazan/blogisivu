@@ -12,7 +12,7 @@
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="draft_id" value="{{ draft.id }}">
     <p>Title</p>
-    <textarea name="title" placeholder="Title" rows="1"  cols="45" minlength="3" maxlength="40"></textarea>
+    <textarea name="title" placeholder="Title" rows="1"  cols="45" minlength="3" maxlength="40"> {{ draft.title }}</textarea>
     <p>Content</p>
     <textarea name="content" placeholder="Content" rows="20" cols="140" minlength="5" maxlength="4000">{{ draft.content }}</textarea>
     <input type="submit" name="action" value="save draft">
