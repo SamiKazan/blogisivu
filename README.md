@@ -3,15 +3,15 @@
 tietokannat ja webohjelmointi course project <br />
 
 <h1>Sovelluksen testaus: </h1>
-(en saanut fly.io toimimaan)
-1. start-pg.sh terminaalissa
-2. toisessa terminaalissa avaa psql
-3. kopioi schema.sql sisältö psql terminaaliin
-4. avaa kolmas terminaali
-5. mene projektin hakemistoon
-6. source venv/bin/activate
-7. flask run
-8. avaa linkki
+(en saanut fly.io toimimaan) <br>
+1. start-pg.sh terminaalissa <br>
+2. toisessa terminaalissa avaa psql <br>
+3. kopioi schema.sql sisältö psql terminaaliin <br>
+4. avaa kolmas terminaali <br>
+5. mene projektin hakemistoon <br>
+6. source venv/bin/activate <br>
+7. flask run <br>
+8. avaa linkki <br>
 
 
 <h2>Esittely</h2>
