@@ -1,7 +1,5 @@
 # blogisivu
 
-tietokannat ja webohjelmointi course project <br />
-
 <h1>Sovelluksen testaus: </h1>
 (en saanut fly.io toimimaan) <br>
 1. start-pg.sh terminaalissa <br>
