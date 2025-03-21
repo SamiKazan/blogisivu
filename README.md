@@ -1,7 +1,9 @@
 # blogisivu
 
+Linkki sivustolle: https://blogsite-tuw1.onrender.com/ <br>
+Sivuston lataaamiseen saatta kestää jopa minuutti.
+
 <h1>Sovelluksen testaus: </h1>
-(en saanut fly.io toimimaan) <br>
 1. start-pg.sh terminaalissa <br>
 2. toisessa terminaalissa avaa psql <br>
 3. kopioi schema.sql sisältö psql terminaaliin <br>
