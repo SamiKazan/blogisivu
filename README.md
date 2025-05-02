@@ -1,6 +1,6 @@
 # blogisivu
 
-Linkki sivustolle: https://blogsite-tuw1.onrender.com/ <br>
+Linkki sivustolle: https://blogisite-l151.onrender.com <br>
 Sivuston lataaamiseen saatta kestää jopa minuutti.
 
 <h1>Sovelluksen testaus lokaalisti: </h1>
